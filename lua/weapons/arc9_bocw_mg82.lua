@@ -247,7 +247,15 @@ SWEP.ShootWhileSprint = false
 SWEP.Speed = 1
 
 SWEP.SpeedMult = 0.95
-SWEP.SpeedMultSprint = 0.6374269005847955
+
+local SprintMultCvar = GetConVar("arc9_bocw_sprintmultiplier")
+
+if SprintMultCvar:GetBool() then
+    SWEP.SpeedMultSprint = 0.6374269005847955 -- SPRINT SPEED RELATIVE TO MOVE SPEED
+else
+    SWEP.SpeedMultSprint = 1 -- this may possibly change later
+end
+
 SWEP.SpeedMultSights = 0.2680311890838207
 SWEP.SpeedMultShooting = 0.6101364522417153
 SWEP.SpeedMultMelee = 1
@@ -705,12 +713,22 @@ SWEP.Attachments = {
         CosmeticOnly = true,
     },
 }
+--=========================================================
+-- CUSTOM SLOT INSERTION
+local CustomSlotCvar = GetConVar("arc9_bocw_customslot")
+local CustomSlotTable = {
+    PrintName = "Custom Slot",
+    Bone = "tag_weapon",
+    Pos = Vector(0, 0, 0),
+    Ang = Angle(0, 0, 0),
+    Icon_Offset = Vector(-10, 0, 3),
+    Category = {"bocw_custom_slot", "bocw_custom_slot_mg82"},
+}
 
-SWEP.Hook_ModifyBodygroups = function(self, data)
-
-    local vm = data.model
-    local attached = data.elements
+if CustomSlotCvar:GetBool() then
+    table.insert(SWEP.Attachments, CustomSlotTable)
 end
+--=========================================================
 
 SWEP.Hook_TranslateAnimation = function(swep, anim)
     
